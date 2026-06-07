@@ -1033,6 +1033,537 @@ const GRAMMAR_DATA = {
           ]
         }
       ]
+    },
+
+    // ---- Common Errors ----
+    {
+      id: 'errors', title: 'Common Errors', icon: '❌', desc: 'The most common spoken English mistakes — and exactly how to fix them', color: '#ef4444',
+      sections: [
+        {
+          id: 'err1', title: 'Stative Verbs — Never Use With -ing',
+          type: 'mistakes',
+          note: 'Stative verbs describe states, not actions. They are NEVER used with -ing (present continuous).',
+          intro: 'Verbs like know, have, want, like, love, hate, see, hear, seem, understand, believe, remember — these describe states that simply exist. Do not add -ing to them.',
+          items: [
+            { wrong: 'I am knowing the answer.', right: 'I know the answer.', why: '"Know" is a stative verb — it describes a mental state, not an ongoing action.' },
+            { wrong: 'She is having a car.', right: 'She has a car.', why: '"Have" (possession) is stative. Use simple present, not continuous.' },
+            { wrong: 'He is seeming tired today.', right: 'He seems tired today.', why: '"Seem" describes an appearance or state — never use it with -ing.' },
+            { wrong: 'I am liking this movie.', right: 'I like this movie.', why: '"Like" and "love" are stative — they never take the -ing form in standard English.' },
+            { wrong: 'They are wanting to leave.', right: 'They want to leave.', why: '"Want" expresses a desire (a state), not an action in progress.' },
+            { wrong: 'Are you understanding me?', right: 'Do you understand me?', why: '"Understand" is a mental state verb. Use simple present, not continuous.' },
+            { wrong: 'I am believing you.', right: 'I believe you.', why: '"Believe" expresses a mental state — always use simple present.' },
+            { wrong: 'She is remembering his name.', right: 'She remembers his name.', why: '"Remember" is stative — it describes a mental state, not an ongoing action.' }
+          ]
+        },
+        {
+          id: 'err2', title: 'Subject-Verb Agreement',
+          type: 'mistakes',
+          note: 'The verb must always agree with the subject. "Everyone", "each", and "neither" are always singular — a common trap.',
+          intro: 'When the subject is singular, use a singular verb. Watch out for tricky subjects like "everyone", "each", "neither", and collective nouns like "team" and "family".',
+          items: [
+            { wrong: 'Everyone have finished the test.', right: 'Everyone has finished the test.', why: '"Everyone", "someone", "anyone", "no one" are always singular — use "has", not "have".' },
+            { wrong: 'The team are playing well.', right: 'The team is playing well.', why: 'Collective nouns (team, group, family, class) take a singular verb in Indian/formal English.' },
+            { wrong: 'Neither of the answers are correct.', right: 'Neither of the answers is correct.', why: '"Neither" is singular. Use a singular verb even when followed by "of + plural noun".' },
+            { wrong: 'Each of the students have a book.', right: 'Each of the students has a book.', why: '"Each" is always singular — it refers to every individual one separately.' },
+            { wrong: 'The news are shocking.', right: 'The news is shocking.', why: '"News" looks plural but is an uncountable noun — always use it with a singular verb.' },
+            { wrong: 'My family are coming tomorrow.', right: 'My family is coming tomorrow.', why: 'Treat family, class, and committee as singular in formal and Indian English.' }
+          ]
+        },
+        {
+          id: 'err3', title: 'Wrong Tense Usage',
+          type: 'mistakes',
+          note: 'Present Perfect vs Simple Past is the most common tense mistake. Use Present Perfect for actions connected to now. Use Simple Past for completed actions at a specific past time.',
+          intro: '"Since" always needs Present Perfect. "Yesterday", "last week", "in 2020" always need Simple Past. Getting this right instantly improves your English.',
+          items: [
+            { wrong: 'I am here since morning.', right: 'I have been here since morning.', why: '"Since" requires Present Perfect — not Present Continuous.' },
+            { wrong: 'She is gone to the market.', right: 'She has gone to the market.', why: 'Use "has/have gone" (Present Perfect) — "is gone" is not standard English.' },
+            { wrong: 'I have seen him yesterday.', right: 'I saw him yesterday.', why: '"Yesterday" is a specific past time → use Simple Past, not Present Perfect.' },
+            { wrong: 'I am working here for 5 years.', right: 'I have been working here for 5 years.', why: '"For 5 years" with an ongoing action requires Present Perfect Continuous.' },
+            { wrong: 'Did you ate already?', right: 'Have you eaten already? / Did you eat already?', why: 'Never combine "did" with a past tense verb. Use "did + base form" or "have + past participle".' },
+            { wrong: 'I will call you after I will reach.', right: 'I will call you after I reach.', why: 'In time clauses (after, when, before, once), use Simple Present — not Future tense.' },
+            { wrong: 'He is coming just now.', right: 'He just came. / He has just come.', why: '"Just now" in Indian English means a moment ago — use Simple Past or Present Perfect.' },
+            { wrong: 'We are discussing this since an hour.', right: 'We have been discussing this for an hour.', why: 'Use "for" with duration and "since" with a point in time. Use Present Perfect Continuous here.' }
+          ]
+        },
+        {
+          id: 'err4', title: 'Redundant & Incorrect Phrases',
+          type: 'mistakes',
+          note: 'These phrases are either grammatically wrong or unnecessarily repetitive. They are extremely common in Indian spoken English.',
+          intro: 'A redundant phrase says the same thing twice. Learn these six — avoiding them will immediately make your English sound more professional.',
+          items: [
+            { wrong: 'Please revert back to me.', right: 'Please revert to me. / Please reply to me.', why: '"Revert" already means "go back" — adding "back" is redundant.' },
+            { wrong: 'Return back home.', right: 'Return home. / Go back home.', why: '"Return" already means coming back — "back" is redundant.' },
+            { wrong: 'He is more superior to others.', right: 'He is superior to others.', why: '"Superior" is already comparative — never say "more superior".' },
+            { wrong: 'The reason is because…', right: 'The reason is that… / It is because…', why: '"The reason is that" OR "because" — using both together is redundant.' },
+            { wrong: 'I will do the needful.', right: 'I will take care of it. / I will do what is needed.', why: '"Do the needful" is an outdated Indian English expression — avoid it in modern professional contexts.' },
+            { wrong: 'Please prepone the meeting.', right: 'Please move the meeting earlier. / Please bring it forward.', why: '"Prepone" is not a word in standard English. Use "move it earlier" or "bring it forward".' }
+          ]
+        },
+        {
+          id: 'err5', title: 'Formal vs Informal Register',
+          type: 'mistakes',
+          note: 'Using casual language in formal situations is one of the most damaging English errors in professional settings.',
+          intro: 'Register is the level of formality in your speech. In job interviews, emails to managers, or presentations — always use formal English.',
+          items: [
+            { wrong: 'I wanna discuss this. (in a job interview)', right: 'I would like to discuss this with you.', why: '"Wanna" (want to) is informal. Avoid contractions and slang in professional settings.' },
+            { wrong: 'Yeah, no problem. (to your manager)', right: 'Yes, of course. / Certainly, I will handle that.', why: '"Yeah" is casual. In professional settings, say "Yes" and use complete, polite sentences.' },
+            { wrong: 'ASAP send me the report. (to a client)', right: 'Could you please send me the report at your earliest convenience?', why: 'Direct commands sound rude to clients. Use polite, indirect requests.' },
+            { wrong: 'Anyways, moving on… (in a formal presentation)', right: 'Moving on… / Let us now turn to…', why: '"Anyways" is informal and grammatically incorrect. Use "anyway" or "moving on" instead.' }
+          ]
+        }
+      ]
+    },
+
+    // ---- Idioms & Phrasal Verbs ----
+    {
+      id: 'idioms', title: 'Idioms & Phrases', icon: '💬', desc: 'Master high-frequency idioms and phrasal verbs for natural, confident English', color: '#f59e0b',
+      sections: [
+        {
+          id: 'id1', title: 'Essential English Idioms',
+          type: 'type-cards',
+          note: 'An idiom is a phrase whose meaning cannot be guessed from the individual words. These 20 appear constantly in everyday English conversations.',
+          items: [
+            { icon: '🧊', name: 'Break the ice', desc: 'Start a conversation or ease tension in a social situation.', tags: ['She told a joke to break the ice at the meeting.', 'He broke the ice by asking about her hometown.'] },
+            { icon: '🌧️', name: 'Under the weather', desc: 'Feeling slightly ill or unwell.', tags: ['I\'m feeling under the weather today — I may skip the gym.', 'She looked under the weather, so we sent her home early.'] },
+            { icon: '🌙', name: 'Once in a blue moon', desc: 'Very rarely; almost never happens.', tags: ['She visits us once in a blue moon.', 'He only cooks once in a blue moon.'] },
+            { icon: '💡', name: 'Hit the nail on the head', desc: 'Say or identify exactly the right thing.', tags: ['You hit the nail on the head — that is exactly the problem.', 'Her analysis really hit the nail on the head.'] },
+            { icon: '🦷', name: 'Bite the bullet', desc: 'Endure a painful or difficult situation with courage.', tags: ['Just bite the bullet and finish the assignment.', 'He bit the bullet and went to the dentist.'] },
+            { icon: '🛋️', name: 'Sit on the fence', desc: 'Avoid taking sides or making a decision; stay neutral.', tags: ['Stop sitting on the fence — tell us what you think!', 'Politicians often sit on the fence on controversial issues.'] },
+            { icon: '🎯', name: 'Miss the point', desc: 'Fail to understand the most important part of something.', tags: ['I think you\'re missing the point — it\'s not about money.', 'He completely missed the point of the lesson.'] },
+            { icon: '🌊', name: 'Get out of hand', desc: 'Become impossible to control; go beyond acceptable limits.', tags: ['The argument got out of hand quickly.', 'The crowd got out of hand when the match was delayed.'] },
+            { icon: '🔥', name: 'Burn bridges', desc: 'Permanently damage a relationship or close off an opportunity.', tags: ['Don\'t burn bridges with your previous employer.', 'She burned bridges by leaving without giving notice.'] },
+            { icon: '💎', name: 'Cost an arm and a leg', desc: 'Be extremely expensive.', tags: ['That new phone costs an arm and a leg.', 'Studying abroad can cost an arm and a leg.'] },
+            { icon: '🔨', name: 'Hit the books', desc: 'Study hard; begin studying seriously.', tags: ['The exam is tomorrow — I need to hit the books.', 'She hit the books all weekend before the interview.'] },
+            { icon: '🚂', name: 'Get the ball rolling', desc: 'Start a process or activity; initiate something.', tags: ['Let\'s get the ball rolling on the new project.', 'She got the ball rolling by sending the first email.'] },
+            { icon: '🌅', name: 'See eye to eye', desc: 'Agree with someone; share the same view.', tags: ['We don\'t always see eye to eye, but we respect each other.', 'The two managers finally saw eye to eye on the budget.'] },
+            { icon: '⏰', name: 'Beat around the bush', desc: 'Avoid the main topic without addressing it directly.', tags: ['Stop beating around the bush — just tell me the truth.', 'He kept beating around the bush instead of giving a clear answer.'] },
+            { icon: '🎭', name: 'The ball is in your court', desc: 'It is now your responsibility to take action.', tags: ['I\'ve made my offer — the ball is now in your court.', 'We submitted the proposal; the ball is in their court.'] },
+            { icon: '🔍', name: 'Read between the lines', desc: 'Understand the hidden or implied meaning in what is said.', tags: ['Read between the lines — she is clearly upset about it.', 'You need to read between the lines to understand his real intention.'] },
+            { icon: '🤝', name: 'Bury the hatchet', desc: 'End a conflict and make peace with someone.', tags: ['After years of fighting, the brothers finally buried the hatchet.', 'It\'s time to bury the hatchet and move forward.'] },
+            { icon: '🏃', name: 'Jump to conclusions', desc: 'Make a judgement too quickly without enough evidence.', tags: ['Don\'t jump to conclusions before hearing his side of the story.', 'She jumped to conclusions and accused the wrong person.'] },
+            { icon: '🌟', name: 'Go the extra mile', desc: 'Make more effort than expected; do more than required.', tags: ['She always goes the extra mile for her students.', 'If you go the extra mile, your boss will notice.'] },
+            { icon: '🌱', name: 'Bite off more than you can chew', desc: 'Take on more responsibility than you can handle.', tags: ['He bit off more than he could chew by taking three projects at once.', 'Don\'t bite off more than you can chew this semester.'] }
+          ]
+        },
+        {
+          id: 'id2', title: 'Essential Phrasal Verbs',
+          type: 'kv-table',
+          note: 'Phrasal verbs combine a verb + preposition/adverb to create a completely new meaning. They are extremely common in spoken English.',
+          headers: ['Phrasal Verb', 'Meaning', 'Example Sentence'],
+          rows: [
+            ['give up', 'Stop trying; abandon a goal', '"Don\'t give up — you are almost there!"'],
+            ['look up', 'Search for information', '"Look up the word in the dictionary."'],
+            ['run out of', 'Have no more of something left', '"We ran out of milk — can you buy some?"'],
+            ['put off', 'Delay or postpone', '"Don\'t put off the work you can do today."'],
+            ['bring up', 'Mention a topic; raise a child', '"She brought up an important point in the meeting."'],
+            ['turn down', 'Reject or refuse', '"He turned down the job offer."'],
+            ['call off', 'Cancel something planned', '"They called off the match due to rain."'],
+            ['figure out', 'Find a solution; understand after thinking', '"Can you figure out what went wrong?"'],
+            ['get along with', 'Have a good relationship with someone', '"She gets along well with her colleagues."'],
+            ['come across', 'Find or meet unexpectedly', '"I came across an old photo while cleaning."'],
+            ['carry on', 'Continue doing something', '"Carry on with your work — I\'ll be back soon."'],
+            ['point out', 'Draw attention to something', '"She pointed out the mistake in my report."'],
+            ['go through', 'Experience something difficult; examine carefully', '"He went through a tough time last year."'],
+            ['take over', 'Assume control or responsibility', '"She will take over the project next month."'],
+            ['set up', 'Establish; arrange; prepare', '"They set up a new company last year."'],
+            ['break down', 'Stop working; become very upset', '"The car broke down on the highway."'],
+            ['catch up', 'Reach the same level; update someone on news', '"I need to catch up on my reading."'],
+            ['stand out', 'Be noticeably better or different', '"Her confidence made her stand out in the interview."'],
+            ['work out', 'Exercise; find a solution; result successfully', '"Things will work out fine — don\'t worry."'],
+            ['hold on', 'Wait; keep a grip on something', '"Hold on — I\'ll get your file right away."']
+          ]
+        }
+      ]
+    },
+
+    // ---- Pronunciation Guide ----
+    {
+      id: 'pronunciation', title: 'Pronunciation', icon: '🗣️', desc: 'Master English vowel sounds, word stress rules, and fix common mispronunciations', color: '#10b981',
+      sections: [
+        {
+          id: 'pr1', title: 'English Vowel Sounds',
+          type: 'kv-table',
+          note: 'English has 12 pure vowel sounds. Many Indian-language speakers confuse short and long vowels — this is the single biggest cause of pronunciation errors.',
+          headers: ['Sound & Symbol', 'Key Words', 'Practise These'],
+          rows: [
+            ['/iː/ — Long EE', '"see", "tea", "meet"', 'feet, keep, people, field, machine'],
+            ['/ɪ/ — Short I', '"sit", "bit", "him"', 'big, hit, listen, build, busy'],
+            ['/e/ — Short E', '"bed", "red", "said"', 'head, friend, many, health, any'],
+            ['/æ/ — Flat A', '"cat", "man", "bad"', 'hat, happy, have, black, hand'],
+            ['/ɑː/ — Long AH', '"car", "far", "heart"', 'father, palm, laugh, bath, dance'],
+            ['/ɒ/ — Short O', '"hot", "top", "what"', 'stop, lot, clock, office, problem'],
+            ['/ɔː/ — Long AW', '"all", "saw", "more"', 'ball, walk, thought, water, floor'],
+            ['/ʊ/ — Short OO', '"book", "good", "put"', 'look, push, would, full, woman'],
+            ['/uː/ — Long OO', '"food", "moon", "blue"', 'school, move, fruit, through, shoe'],
+            ['/ʌ/ — Short U', '"but", "cup", "love"', 'fun, month, blood, tough, country'],
+            ['/ɜː/ — ER sound', '"bird", "her", "word"', 'turn, learn, first, world, earth'],
+            ['/ə/ — Schwa (most common!)', '"about", "the", "ago"', 'again, problem, lesson, family, sofa']
+          ]
+        },
+        {
+          id: 'pr2', title: 'Word Stress Rules',
+          type: 'type-cards',
+          note: 'English is a stress-timed language. The stressed syllable is said LOUDER, LONGER, and at a HIGHER pitch. Wrong stress makes words unrecognisable even when spelled correctly.',
+          items: [
+            { icon: '🏷️', name: 'Two-syllable Nouns → Stress First', desc: 'For most two-syllable nouns, stress the FIRST syllable.', tags: ['PRE-sent (a gift)', 'RE-cord (a vinyl/data record)', 'OB-ject (a thing)', 'PER-mit (a licence)', 'IN-crease (a rise)'] },
+            { icon: '⚡', name: 'Two-syllable Verbs → Stress Second', desc: 'The same word used as a verb stresses the SECOND syllable.', tags: ['pre-SENT (to give/show)', 're-CORD (to capture sound)', 'ob-JECT (to disagree)', 'per-MIT (to allow)', 'in-CREASE (to make bigger)'] },
+            { icon: '🔤', name: '-tion / -sion → Stress the Syllable Before', desc: 'For words ending in -tion or -sion, stress the syllable immediately before the suffix.', tags: ['pro-NUN-ci-A-tion', 'ed-u-CA-tion', 'in-for-MA-tion', 'com-mu-ni-CA-tion', 'con-cen-TRA-tion'] },
+            { icon: '📏', name: 'Three-syllable Words → Often Stress Middle', desc: 'Many three-syllable words stress the second (middle) syllable.', tags: ['to-MO-rrow', 'im-POR-tant', 'ex-AM-ple', 're-MEM-ber', 'be-HAVE-iour'] },
+            { icon: '🔗', name: 'Compound Nouns → Stress the First Word', desc: 'When two nouns are joined, stress the FIRST part.', tags: ['TOOTH-brush', 'BLACK-board', 'HAND-bag', 'SUN-flower', 'BIRTH-day'] }
+          ]
+        },
+        {
+          id: 'pr3', title: 'Commonly Mispronounced Words',
+          type: 'mistakes',
+          note: 'These 15 words are regularly mispronounced by Indian English speakers. Learning the correct form will immediately make your speech clearer.',
+          intro: 'The "wrong" column shows how these are often said. The "right" column shows the natural English pronunciation. Practise using the TTS button on any lesson page.',
+          items: [
+            { wrong: 'VEJ-i-ta-bul (5 syllables)', right: 'VEJ-tuh-bul (3 syllables)', why: 'Vegetable has only 3 syllables in natural speech — the middle syllables are reduced.' },
+            { wrong: 'COM-for-ta-bul (4 syllables)', right: 'CUMF-ter-bul (3 syllables)', why: 'The "or" sound disappears in natural speech — "COMFterbul".' },
+            { wrong: 'WED-nes-day (pronouncing the D)', right: 'WENZ-day (2 syllables, D is silent)', why: 'The "d" in Wednesday is completely silent — say "WENZ-day".' },
+            { wrong: 'pro-NOUN-see-AY-shun', right: 'pro-NUN-see-AY-shun', why: 'It\'s "NUN" not "NOUN" — proNUNciation, not proNOUNciation.' },
+            { wrong: 'LI-bree (2 syllables)', right: 'LI-brair-ee (3 syllables)', why: 'Library has 3 syllables — both R sounds matter: LI-brair-ee.' },
+            { wrong: 'EYE-lund (sounding the S)', right: 'EYE-lund (S is silent)', why: 'The "s" in island is completely silent — "EYE-lund".' },
+            { wrong: 'ask-ED (sounding the D as a separate syllable)', right: 'ASKT (one syllable)', why: 'In natural speech "asked" sounds like "ASKT" — the -ed reduces to a T sound.' },
+            { wrong: 'hi-POTH-e-SIS (wrong stress)', right: 'hy-POTH-e-sis (stress on 2nd syllable)', why: 'Hypothesis: hy-POTH-esis — the stress falls firmly on POTH.' },
+            { wrong: 'PREJ-oo-dis', right: 'PREJ-uh-dis', why: 'The middle vowel is a schwa: PREJ-uh-dis. Not "oo" — "uh".' },
+            { wrong: 'REL-e-vant (4 syllables)', right: 'REL-uh-vunt (3 syllables)', why: 'The middle "e" reduces to a schwa — REL-uh-vunt.' },
+            { wrong: 'spec-IF-ic (stress on first)', right: 'spuh-SIF-ik (stress on second)', why: 'The stress is on the SECOND syllable: spe-CIF-ic.' },
+            { wrong: 'FEB-roo-air-ee', right: 'FEB-yoo-air-ee (British) / FEB-roo-air-ee (American)', why: 'In British English the first R is often not pronounced — FEB-yoo-air-ee.' },
+            { wrong: 'de-BIT (like debit card)', right: 'DEB-it (stress on first)', why: 'Debit stresses the FIRST syllable: DEB-it, not de-BIT.' },
+            { wrong: 'IN-trest-ing (3 syllables)', right: 'IN-ter-est-ing (4 syllables)', why: 'Interesting has 4 syllables — IN-ter-est-ing. Don\'t drop the middle syllable.' },
+            { wrong: 'CON-text (equal stress on both syllables)', right: 'CON-tekst (stress firmly on first)', why: 'The second syllable is very short: CON-tekst. The T blends in.' }
+          ]
+        }
+      ]
     }
   ]
 };
+
+// ---- 2.1 Conversation Scenarios ----
+const CONVERSATION_SCENARIOS = [
+  {
+    title: "At a Doctor's Clinic",
+    icon: "🏥",
+    difficulty: "Beginner",
+    tag: "Health",
+    dialogue: [
+      { speaker: "Patient", line: "Good morning, Doctor. I have had a fever and sore throat since yesterday." },
+      { speaker: "Doctor", line: "I see. Let me check your temperature first. Open your mouth, please." },
+      { speaker: "Patient", line: "Is it serious, Doctor?" },
+      { speaker: "Doctor", line: "Nothing to worry about. You have a mild throat infection. I will prescribe some antibiotics." },
+      { speaker: "Patient", line: "Should I take rest, Doctor?" },
+      { speaker: "Doctor", line: "Yes, please rest for two days, drink plenty of water, and avoid cold food." },
+      { speaker: "Patient", line: "Thank you, Doctor. When should I come back?" },
+      { speaker: "Doctor", line: "Come back after three days if you do not feel better." }
+    ]
+  },
+  {
+    title: "Job Interview",
+    icon: "💼",
+    difficulty: "Intermediate",
+    tag: "Professional",
+    dialogue: [
+      { speaker: "Interviewer", line: "Good morning! Please have a seat. Could you introduce yourself briefly?" },
+      { speaker: "Candidate", line: "Good morning! I am Priya. I have three years of experience in software development and I am passionate about building user-friendly applications." },
+      { speaker: "Interviewer", line: "What would you say is your greatest strength?" },
+      { speaker: "Candidate", line: "I believe my greatest strength is problem-solving. I enjoy breaking down complex issues into simple steps." },
+      { speaker: "Interviewer", line: "Can you describe a challenge you faced at work and how you handled it?" },
+      { speaker: "Candidate", line: "Certainly. Once our team had a tight deadline. I reorganised our tasks, held daily check-ins, and we delivered the project on time." },
+      { speaker: "Interviewer", line: "Why do you want to join our company?" },
+      { speaker: "Candidate", line: "Your company is known for innovation and employee growth. I would love to contribute and grow with your team." }
+    ]
+  },
+  {
+    title: "Asking for Directions",
+    icon: "🗺️",
+    difficulty: "Beginner",
+    tag: "Daily Life",
+    dialogue: [
+      { speaker: "Tourist", line: "Excuse me, could you help me? I am looking for the city library." },
+      { speaker: "Local", line: "Of course! Go straight down this road for about 200 metres." },
+      { speaker: "Tourist", line: "Then what do I do?" },
+      { speaker: "Local", line: "Turn left at the traffic light. You will see a big green building on your right." },
+      { speaker: "Tourist", line: "Is it far from here?" },
+      { speaker: "Local", line: "Not at all — about a five-minute walk." },
+      { speaker: "Tourist", line: "Thank you so much! You have been very helpful." },
+      { speaker: "Local", line: "Happy to help. Have a nice day!" }
+    ]
+  },
+  {
+    title: "Making a Phone Call",
+    icon: "📱",
+    difficulty: "Beginner",
+    tag: "Daily Life",
+    dialogue: [
+      { speaker: "Caller", line: "Good afternoon. May I speak to Mr Sharma, please?" },
+      { speaker: "Receptionist", line: "Good afternoon. Who is calling, please?" },
+      { speaker: "Caller", line: "This is Anita Singh from ABC Solutions." },
+      { speaker: "Receptionist", line: "One moment, please. I will transfer your call." },
+      { speaker: "Mr Sharma", line: "Hello, Anita. How can I help you?" },
+      { speaker: "Caller", line: "Hello, Mr Sharma. I am calling about the meeting scheduled for Thursday. Can we move it to Friday?" },
+      { speaker: "Mr Sharma", line: "Friday works for me. Shall we say two o'clock?" },
+      { speaker: "Caller", line: "Perfect. Thank you, Mr Sharma. I will send a calendar invite." }
+    ]
+  },
+  {
+    title: "Shopping & Bargaining",
+    icon: "🛍️",
+    difficulty: "Beginner",
+    tag: "Daily Life",
+    dialogue: [
+      { speaker: "Customer", line: "How much is this kurta?" },
+      { speaker: "Shopkeeper", line: "It is eight hundred rupees, sir." },
+      { speaker: "Customer", line: "That is a bit expensive. Can you reduce the price a little?" },
+      { speaker: "Shopkeeper", line: "I can give it to you for seven hundred and fifty. This is the best quality cotton." },
+      { speaker: "Customer", line: "What if I take two? Will you give a better deal?" },
+      { speaker: "Shopkeeper", line: "For two, I will make it thirteen hundred rupees — that saves you two hundred." },
+      { speaker: "Customer", line: "Alright, that sounds fair. I will take two. Do you accept cards?" },
+      { speaker: "Shopkeeper", line: "Yes, we accept all cards. Thank you for shopping with us!" }
+    ]
+  },
+  {
+    title: "Discussing a Problem at Work",
+    icon: "🤝",
+    difficulty: "Intermediate",
+    tag: "Professional",
+    dialogue: [
+      { speaker: "Employee", line: "Do you have a few minutes? I wanted to discuss something about the project." },
+      { speaker: "Manager", line: "Sure, have a seat. What is on your mind?" },
+      { speaker: "Employee", line: "I am a bit concerned about the timeline. The requirements keep changing, which is affecting our progress." },
+      { speaker: "Manager", line: "That is a valid concern. Can you give me a specific example?" },
+      { speaker: "Employee", line: "Last week, the client requested two new features after we had already started coding." },
+      { speaker: "Manager", line: "I understand. Let us set up a requirements-freeze deadline going forward." },
+      { speaker: "Employee", line: "That would help a lot. Could we also have a weekly check-in with the client?" },
+      { speaker: "Manager", line: "Excellent idea. I will organise that from next week. Thank you for raising this." }
+    ]
+  },
+  {
+    title: "At a Bank",
+    icon: "🏦",
+    difficulty: "Intermediate",
+    tag: "Daily Life",
+    dialogue: [
+      { speaker: "Customer", line: "Good morning. I would like to open a savings account." },
+      { speaker: "Banker", line: "Good morning! Certainly. May I have your identity proof and address proof, please?" },
+      { speaker: "Customer", line: "I have my Aadhaar card and a recent electricity bill." },
+      { speaker: "Banker", line: "That is fine. Please fill in this form with your personal details." },
+      { speaker: "Customer", line: "What is the minimum balance requirement?" },
+      { speaker: "Banker", line: "For a regular savings account, the minimum balance is one thousand rupees." },
+      { speaker: "Customer", line: "Do I get an ATM card with this account?" },
+      { speaker: "Banker", line: "Yes, your debit card will be delivered to your address within seven working days." }
+    ]
+  },
+  {
+    title: "Giving Feedback Politely",
+    icon: "💬",
+    difficulty: "Advanced",
+    tag: "Professional",
+    dialogue: [
+      { speaker: "Manager", line: "I wanted to share some feedback on your presentation yesterday." },
+      { speaker: "Employee", line: "Of course. I value your feedback." },
+      { speaker: "Manager", line: "Your content was well-researched and the data was compelling. Well done on that." },
+      { speaker: "Employee", line: "Thank you. I spent a lot of time on the research." },
+      { speaker: "Manager", line: "One area to work on is the pace. You spoke quite fast and the audience had difficulty following some slides." },
+      { speaker: "Employee", line: "I appreciate you pointing that out. I was nervous and rushed through some sections." },
+      { speaker: "Manager", line: "Totally understandable. Try pausing after each key point — it gives the audience time to absorb the information." },
+      { speaker: "Employee", line: "That is great advice. I will practise that for the next presentation. Thank you." }
+    ]
+  }
+];
+
+// ---- 2.2 English Registers ----
+const REGISTER_DATA = [
+  {
+    situation: "Agreeing",
+    icon: "👍",
+    formal: "I concur with your assessment entirely.",
+    conversational: "I completely agree with you.",
+    casual: "Yeah, totally! You're so right."
+  },
+  {
+    situation: "Declining",
+    icon: "🙅",
+    formal: "I regret that I am unable to attend.",
+    conversational: "Sorry, I can't make it.",
+    casual: "Nope, I'm out. Can't come."
+  },
+  {
+    situation: "Requesting",
+    icon: "🙏",
+    formal: "I would be grateful if you could assist me with this matter.",
+    conversational: "Could you please help me with this?",
+    casual: "Hey, can you help me out?"
+  },
+  {
+    situation: "Apologising",
+    icon: "😔",
+    formal: "I sincerely apologise for any inconvenience caused.",
+    conversational: "I'm really sorry about that.",
+    casual: "My bad! So sorry!"
+  },
+  {
+    situation: "Complaining",
+    icon: "😤",
+    formal: "I wish to bring to your attention an issue regarding the service provided.",
+    conversational: "I'm not happy with the service I received.",
+    casual: "This is terrible! I'm so annoyed."
+  },
+  {
+    situation: "Greeting",
+    icon: "👋",
+    formal: "Good morning. It is a pleasure to meet you.",
+    conversational: "Hi! Nice to meet you.",
+    casual: "Hey! What's up?"
+  },
+  {
+    situation: "Giving Opinion",
+    icon: "💡",
+    formal: "In my considered opinion, this approach warrants further evaluation.",
+    conversational: "I think we should look at this more carefully.",
+    casual: "Honestly, I'm not sure about this one."
+  },
+  {
+    situation: "Saying Goodbye",
+    icon: "🚪",
+    formal: "It was a pleasure speaking with you. I look forward to our next meeting.",
+    conversational: "Great talking to you. See you next time!",
+    casual: "Catch you later! Bye!"
+  }
+];
+
+// ---- 2.3 Tongue Twisters ----
+const TONGUE_TWISTERS = [
+  { text: "She sells seashells by the seashore.", difficulty: "Easy" },
+  { text: "Red lorry, yellow lorry.", difficulty: "Easy" },
+  { text: "Peter Piper picked a peck of pickled peppers.", difficulty: "Easy" },
+  { text: "How much wood would a woodchuck chuck if a woodchuck could chuck wood?", difficulty: "Easy" },
+  { text: "I saw Susie sitting in a shoeshine shop.", difficulty: "Easy" },
+  { text: "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair. Fuzzy Wuzzy wasn't fuzzy, was he?", difficulty: "Medium" },
+  { text: "Betty Botter bought some butter, but she said the butter's bitter.", difficulty: "Medium" },
+  { text: "How can a clam cram in a clean cream can?", difficulty: "Medium" },
+  { text: "Six sick hicks nick six slick bricks with picks and sticks.", difficulty: "Medium" },
+  { text: "A skunk sat on a stump. The stump thunk the skunk stunk. The skunk thunk the stump stunk.", difficulty: "Medium" },
+  { text: "The sixth sick sheikh's sixth sheep's sick.", difficulty: "Hard" },
+  { text: "Pad kid poured curd pulled cod. Pad kid poured curd pulled cod. Pad kid poured curd pulled cod.", difficulty: "Hard" },
+  { text: "Which witch switched the Swiss wristwatches?", difficulty: "Hard" },
+  { text: "Fred fed Ted bread, and Ted fed Fred bread.", difficulty: "Hard" },
+  { text: "I wish to wish the wish you wish to wish, but if you wish the wish the witch wishes, I won't wish the wish you wish to wish.", difficulty: "Hard" }
+];
+
+// ---- 3.3 Daily Sentence Challenges ----
+const SENTENCE_CHALLENGES = [
+  { sentence: "She _____ to school every day.", blank: "goes", options: ["go", "goes", "gone"], hint: "Third-person singular present tense" },
+  { sentence: "I have been waiting _____ two hours.", blank: "for", options: ["since", "for", "from"], hint: "Use 'for' with a duration of time" },
+  { sentence: "Neither the students nor the teacher _____ present.", blank: "was", options: ["were", "was", "are"], hint: "With 'neither...nor', the verb agrees with the nearest subject" },
+  { sentence: "Please _____ me know if you need help.", blank: "let", options: ["leave", "let", "make"], hint: "'Let me know' is the correct phrase" },
+  { sentence: "The news _____ shocking.", blank: "was", options: ["were", "was", "are"], hint: "'News' is an uncountable noun — always singular" },
+  { sentence: "He _____ his homework before dinner.", blank: "had finished", options: ["finished", "had finished", "has finished"], hint: "Past perfect shows an action completed before another past event" },
+  { sentence: "I am looking forward _____ meeting you.", blank: "to", options: ["for", "to", "at"], hint: "'Look forward to' is the fixed phrase — 'to' is a preposition here" },
+  { sentence: "_____ of the two options is acceptable.", blank: "Either", options: ["Any", "Either", "Both"], hint: "'Either' is used when referring to exactly two choices" },
+  { sentence: "The book was _____ interesting that I finished it in one day.", blank: "so", options: ["such", "so", "too"], hint: "'So + adjective' expresses degree" },
+  { sentence: "She is good _____ playing the piano.", blank: "at", options: ["in", "at", "on"], hint: "'Good at' is the correct preposition pairing" },
+  { sentence: "They have lived here _____ 2010.", blank: "since", options: ["for", "since", "from"], hint: "Use 'since' with a specific point in time" },
+  { sentence: "I _____ rather stay home than go out tonight.", blank: "would", options: ["will", "would", "should"], hint: "'Would rather' expresses preference" },
+  { sentence: "The committee _____ reached a decision.", blank: "has", options: ["have", "has", "had"], hint: "In Indian/British English, collective nouns can take singular verbs" },
+  { sentence: "He apologised _____ being late.", blank: "for", options: ["about", "for", "of"], hint: "'Apologise for' is the correct preposition pairing" },
+  { sentence: "I wish I _____ taller.", blank: "were", options: ["was", "were", "am"], hint: "In wish clauses, use 'were' for all persons (subjunctive mood)" },
+  { sentence: "Can you _____ the difference between these two sounds?", blank: "hear", options: ["listen", "hear", "feel"], hint: "'Hear' is passive perception; 'listen' is active and intentional" },
+  { sentence: "She has been working here _____ five years.", blank: "for", options: ["since", "for", "during"], hint: "'For' is used with a period of time" },
+  { sentence: "It is no use _____ over spilt milk.", blank: "crying", options: ["to cry", "crying", "cry"], hint: "After 'no use', use the -ing form (gerund)" },
+  { sentence: "The harder you work, _____ you will succeed.", blank: "the more likely", options: ["more likely", "the more likely", "most likely"], hint: "The comparative 'the...the' structure requires 'the' before both parts" },
+  { sentence: "I am used to _____ up early.", blank: "waking", options: ["wake", "waking", "woke"], hint: "'Used to + verb-ing' means it is a habit; 'used to + base verb' means a past habit" },
+  { sentence: "She looked _____ to see who was calling.", blank: "around", options: ["around", "about", "round"], hint: "'Look around' means to look in different directions" },
+  { sentence: "The train arrives _____ platform three.", blank: "at", options: ["on", "at", "in"], hint: "Use 'at' for specific points like platforms and stops" },
+  { sentence: "He is _____ honest man.", blank: "an", options: ["a", "an", "the"], hint: "'Honest' starts with a vowel sound (/ɒnɪst/) so use 'an'" },
+  { sentence: "By the time she arrived, the film _____.", blank: "had already started", options: ["already started", "had already started", "has already started"], hint: "Past perfect is used for the action that happened first" },
+  { sentence: "I suggested _____ the meeting by an hour.", blank: "postponing", options: ["to postpone", "postponing", "postpone"], hint: "'Suggest' is followed by the gerund (-ing form)" },
+  { sentence: "Could you speak _____? I cannot hear you clearly.", blank: "louder", options: ["loud", "louder", "loudly"], hint: "With verbs of sense and being, adjectives can modify the verb" },
+  { sentence: "He has a lot of work _____ today.", blank: "to do", options: ["doing", "to do", "do"], hint: "Infinitive (to + verb) is used after 'work' to express purpose" },
+  { sentence: "Neither of the answers _____ correct.", blank: "is", options: ["are", "is", "were"], hint: "'Neither of' takes a singular verb" },
+  { sentence: "The police _____ investigating the case.", blank: "are", options: ["is", "are", "was"], hint: "'Police' is always plural in standard English" },
+  { sentence: "I am familiar _____ this type of problem.", blank: "with", options: ["to", "with", "of"], hint: "'Familiar with' is the correct preposition pairing" }
+];
+
+// ---- 3.4 Word of the Day Seeds (offline fallback pool) ----
+const WORD_OF_DAY_SEEDS = [
+  { word: "Eloquent", pronunciation: "EL-oh-kwent", partOfSpeech: "adjective", meaning: "Fluent and persuasive in speaking or writing.", example: "Her eloquent speech moved the entire audience to tears." },
+  { word: "Resilient", pronunciation: "ri-ZIL-ee-ent", partOfSpeech: "adjective", meaning: "Able to recover quickly from difficulties.", example: "He remained resilient despite facing many setbacks in life." },
+  { word: "Ambiguous", pronunciation: "am-BIG-yoo-us", partOfSpeech: "adjective", meaning: "Open to more than one interpretation; not clear.", example: "The instructions were ambiguous, so we were confused about what to do." },
+  { word: "Persevere", pronunciation: "per-suh-VEER", partOfSpeech: "verb", meaning: "To continue in a course of action despite difficulty.", example: "She persevered through years of hard work to become a doctor." },
+  { word: "Concise", pronunciation: "kon-SISE", partOfSpeech: "adjective", meaning: "Giving a lot of information clearly and in a few words.", example: "Please write a concise summary of the report in three sentences." },
+  { word: "Diligent", pronunciation: "DIL-ih-jent", partOfSpeech: "adjective", meaning: "Having or showing care and effort in work.", example: "A diligent student always reviews notes after every class." },
+  { word: "Empathy", pronunciation: "EM-puh-thee", partOfSpeech: "noun", meaning: "The ability to understand and share the feelings of another person.", example: "Good leaders show empathy and listen to their team's concerns." },
+  { word: "Candid", pronunciation: "KAN-did", partOfSpeech: "adjective", meaning: "Truthful and straightforward; frank.", example: "I appreciate your candid feedback — it helps me improve." },
+  { word: "Negotiate", pronunciation: "ni-GOH-shee-ate", partOfSpeech: "verb", meaning: "To try to reach an agreement through discussion.", example: "They negotiated a better salary before accepting the job offer." },
+  { word: "Meticulous", pronunciation: "meh-TIK-yoo-lus", partOfSpeech: "adjective", meaning: "Showing great attention to detail and care.", example: "The meticulous editor checked every sentence twice before publishing." },
+  { word: "Articulate", pronunciation: "ar-TIK-yoo-lit", partOfSpeech: "adjective", meaning: "Able to express thoughts and feelings clearly.", example: "An articulate speaker can explain complex ideas in simple words." },
+  { word: "Collaborate", pronunciation: "kuh-LAB-uh-rate", partOfSpeech: "verb", meaning: "To work jointly with others on a task.", example: "The two departments collaborated to launch the new product successfully." },
+  { word: "Scrutinise", pronunciation: "SKROO-tuh-nize", partOfSpeech: "verb", meaning: "To examine or inspect closely and thoroughly.", example: "The inspector scrutinised every document before giving approval." },
+  { word: "Pragmatic", pronunciation: "prag-MAT-ik", partOfSpeech: "adjective", meaning: "Dealing with things sensibly and realistically.", example: "A pragmatic manager focuses on what is achievable, not just ideal." },
+  { word: "Persistent", pronunciation: "per-SIS-tent", partOfSpeech: "adjective", meaning: "Continuing firmly despite obstacles.", example: "Her persistent efforts finally led to a breakthrough in research." },
+  { word: "Verbose", pronunciation: "ver-BOHS", partOfSpeech: "adjective", meaning: "Using more words than needed; long-winded.", example: "Try not to be verbose in emails — keep them short and to the point." },
+  { word: "Fathom", pronunciation: "FATH-um", partOfSpeech: "verb", meaning: "To understand (something) after much thought.", example: "I cannot fathom why he made such a strange decision." },
+  { word: "Tenacious", pronunciation: "tuh-NAY-shus", partOfSpeech: "adjective", meaning: "Holding firmly to something; not giving up easily.", example: "A tenacious athlete trains every day, no matter the weather." },
+  { word: "Lucid", pronunciation: "LOO-sid", partOfSpeech: "adjective", meaning: "Clearly expressed and easy to understand.", example: "Her lucid explanation made the difficult topic much easier to grasp." },
+  { word: "Inquisitive", pronunciation: "in-KWIZ-ih-tiv", partOfSpeech: "adjective", meaning: "Curious; eager to know or learn things.", example: "An inquisitive mind asks questions and seeks answers constantly." },
+  { word: "Tactful", pronunciation: "TAKT-ful", partOfSpeech: "adjective", meaning: "Having sensitivity in dealing with difficult people or situations.", example: "She was tactful when delivering the disappointing news to the team." },
+  { word: "Earnest", pronunciation: "UR-nist", partOfSpeech: "adjective", meaning: "Sincere and serious in intention.", example: "He made an earnest promise to improve his performance." },
+  { word: "Prolific", pronunciation: "proh-LIF-ik", partOfSpeech: "adjective", meaning: "Producing a large amount of something.", example: "The prolific author published three novels in a single year." },
+  { word: "Acknowledge", pronunciation: "ak-NOL-ij", partOfSpeech: "verb", meaning: "To recognise or admit the existence or truth of something.", example: "It is important to acknowledge your mistakes and learn from them." },
+  { word: "Versatile", pronunciation: "VUR-suh-til", partOfSpeech: "adjective", meaning: "Able to adapt to many different functions or activities.", example: "A versatile employee can handle many different tasks efficiently." },
+  { word: "Compassion", pronunciation: "kum-PASH-un", partOfSpeech: "noun", meaning: "Sympathetic concern for the suffering of others.", example: "The nurse showed great compassion to her patients every day." },
+  { word: "Initiative", pronunciation: "ih-NISH-ee-uh-tiv", partOfSpeech: "noun", meaning: "The ability to take action independently without being told.", example: "She took the initiative to organise the team meeting herself." },
+  { word: "Exemplary", pronunciation: "ig-ZEM-pluh-ree", partOfSpeech: "adjective", meaning: "Serving as a desirable model; excellent.", example: "His exemplary conduct earned him the employee of the year award." },
+  { word: "Daunting", pronunciation: "DAWN-ting", partOfSpeech: "adjective", meaning: "Seeming difficult to deal with in prospect; intimidating.", example: "Learning a new language can seem daunting at first, but practice helps." },
+  { word: "Brevity", pronunciation: "BREV-ih-tee", partOfSpeech: "noun", meaning: "Concise and exact use of words in writing or speech.", example: "Brevity is the soul of wit — say more with fewer words." },
+  { word: "Coherent", pronunciation: "koh-HEER-ent", partOfSpeech: "adjective", meaning: "Logical and consistent; easy to understand.", example: "A coherent argument is well-organised and easy to follow." },
+  { word: "Candour", pronunciation: "KAN-der", partOfSpeech: "noun", meaning: "The quality of being open and honest in expression.", example: "I admire her candour — she always says exactly what she thinks." },
+  { word: "Eloquence", pronunciation: "EL-oh-kwens", partOfSpeech: "noun", meaning: "Fluent and persuasive expression in speaking or writing.", example: "His eloquence in the debate convinced many undecided voters." },
+  { word: "Succinct", pronunciation: "suk-SINKT", partOfSpeech: "adjective", meaning: "Briefly and clearly expressed.", example: "A succinct answer is more impressive than a long, rambling one." },
+  { word: "Integrity", pronunciation: "in-TEG-ruh-tee", partOfSpeech: "noun", meaning: "The quality of being honest and having strong moral principles.", example: "Leaders with integrity earn the trust and respect of their teams." },
+  { word: "Nuance", pronunciation: "NYOO-ahns", partOfSpeech: "noun", meaning: "A subtle difference in meaning or expression.", example: "Understanding the nuances of English takes time and careful reading." },
+  { word: "Assertive", pronunciation: "uh-SUR-tiv", partOfSpeech: "adjective", meaning: "Confident and direct in behaviour; self-assured.", example: "Being assertive means stating your opinion clearly and respectfully." },
+  { word: "Acquiesce", pronunciation: "ak-wee-ES", partOfSpeech: "verb", meaning: "To accept something reluctantly but without protest.", example: "She acquiesced to the new schedule even though it was inconvenient." },
+  { word: "Steadfast", pronunciation: "STED-fast", partOfSpeech: "adjective", meaning: "Resolutely firm and unwavering.", example: "He remained steadfast in his commitment to finish the project." },
+  { word: "Accentuate", pronunciation: "ak-SEN-choo-ate", partOfSpeech: "verb", meaning: "To make something more noticeable or prominent.", example: "Smiling accentuates the warmth in your voice when speaking." },
+  { word: "Galvanise", pronunciation: "GAL-vuh-nize", partOfSpeech: "verb", meaning: "To shock or excite someone into taking action.", example: "The coach's speech galvanised the team before the final match." },
+  { word: "Innate", pronunciation: "ih-NAYT", partOfSpeech: "adjective", meaning: "Inborn; existing from birth.", example: "Children have an innate curiosity that drives them to explore everything." },
+  { word: "Profound", pronunciation: "pruh-FOUND", partOfSpeech: "adjective", meaning: "Very deep or intense; having great meaning.", example: "Reading great literature can have a profound effect on your thinking." },
+  { word: "Substantiate", pronunciation: "sub-STAN-shee-ate", partOfSpeech: "verb", meaning: "To provide evidence to support or prove something.", example: "Always substantiate your claims with facts and data." },
+  { word: "Impartial", pronunciation: "im-PAR-shul", partOfSpeech: "adjective", meaning: "Treating all rivals or disputants equally; fair.", example: "A good judge must be impartial and listen to all sides." },
+  { word: "Jeopardise", pronunciation: "JEP-er-dize", partOfSpeech: "verb", meaning: "To put something at risk of being harmed or lost.", example: "Arriving late can jeopardise your chances of getting the job." },
+  { word: "Rectify", pronunciation: "REK-tih-fie", partOfSpeech: "verb", meaning: "To put something right; to correct.", example: "We need to rectify this error before sending the report." },
+  { word: "Paramount", pronunciation: "PAR-uh-mount", partOfSpeech: "adjective", meaning: "More important than anything else; supreme.", example: "The safety of passengers is of paramount importance on this flight." },
+  { word: "Heed", pronunciation: "HEED", partOfSpeech: "verb", meaning: "To pay careful attention to advice or a warning.", example: "Please heed the doctor's advice and take your medication on time." },
+  { word: "Candid", pronunciation: "KAN-did", partOfSpeech: "adjective", meaning: "Truthful and straightforward; frank.", example: "She gave a candid assessment of the project's weaknesses." }
+];
+
+// ---- 3.1 Error Correction Game ----
+const ERROR_GAME_DATA = [
+  { sentence: ["I", "am", "knowing", "the", "answer."], errorIdx: 2, correct: "know", why: "'Know' is a stative verb — it describes a state, not an action. Never use it in the -ing (continuous) form." },
+  { sentence: ["She", "don't", "likes", "coffee."], errorIdx: 1, correct: "doesn't", why: "With third-person singular (she/he/it), use 'doesn't', not 'don't'." },
+  { sentence: ["I", "am", "here", "since", "morning."], errorIdx: 3, correct: "have been here", why: "For an action that started in the past and continues now, use the present perfect continuous: 'I have been here since morning.'" },
+  { sentence: ["He", "is", "more", "superior", "to", "me."], errorIdx: 3, correct: "superior", why: "'Superior' already means 'higher than'. Adding 'more' is redundant — say 'superior to me'." },
+  { sentence: ["Everyone", "have", "their", "own", "opinion."], errorIdx: 1, correct: "has", why: "'Everyone' is singular and takes a singular verb: 'Everyone has their own opinion.'" },
+  { sentence: ["She", "suggested", "to", "take", "a", "break."], errorIdx: 2, correct: "taking", why: "'Suggest' is followed by a gerund (-ing form): 'She suggested taking a break.'" },
+  { sentence: ["The", "news", "are", "shocking."], errorIdx: 2, correct: "is", why: "'News' is an uncountable noun and always takes a singular verb: 'The news is shocking.'" },
+  { sentence: ["I", "look", "forward", "to", "meet", "you."], errorIdx: 4, correct: "meeting", why: "After 'look forward to', the verb must be in the -ing form: 'look forward to meeting you'." },
+  { sentence: ["He", "returned", "back", "home", "late."], errorIdx: 2, correct: "home", why: "'Return' already means to go back. 'Return back' is redundant — just say 'returned home'." },
+  { sentence: ["She", "is", "good", "in", "mathematics."], errorIdx: 3, correct: "at", why: "The correct preposition is 'good at', not 'good in': 'She is good at mathematics.'" },
+  { sentence: ["I", "have", "been", "waiting", "since", "two", "hours."], errorIdx: 4, correct: "for", why: "Use 'for' with a period of time: 'waiting for two hours'. Use 'since' with a point in time." },
+  { sentence: ["We", "discussed", "about", "the", "problem."], errorIdx: 2, correct: "discussed", why: "'Discuss' is a transitive verb that does not need 'about': 'We discussed the problem.'" },
+  { sentence: ["He", "is", "too", "much", "intelligent."], errorIdx: 2, correct: "very", why: "'Too much' is used with nouns. With adjectives, use 'very': 'He is very intelligent.'" },
+  { sentence: ["I", "am", "having", "a", "headache."], errorIdx: 2, correct: "have", why: "'Have' is a stative verb when describing possession or conditions. Say 'I have a headache', not 'I am having'." },
+  { sentence: ["They", "reached", "to", "the", "station", "on", "time."], errorIdx: 2, correct: "reached", why: "'Reach' is a transitive verb that doesn't need 'to': 'They reached the station on time.'" },
+  { sentence: ["She", "asked", "me", "that", "where", "I", "lived."], errorIdx: 3, correct: "where", why: "In indirect speech, do not use 'that' with question words. Say 'She asked me where I lived.'" },
+  { sentence: ["I", "will", "come", "tomorrow", "if", "it", "won't", "rain."], errorIdx: 6, correct: "doesn't", why: "In conditional sentences with 'if', use present tense: 'if it doesn't rain', not 'won't rain'." },
+  { sentence: ["He", "gave", "me", "many", "informations."], errorIdx: 4, correct: "information", why: "'Information' is an uncountable noun — it has no plural. Say 'a lot of information' or just 'information'." },
+  { sentence: ["Please", "explain", "me", "this", "problem."], errorIdx: 2, correct: "explain to me", why: "'Explain' requires 'to' before the indirect object: 'Please explain to me this problem' or 'explain this problem to me'." },
+  { sentence: ["The", "both", "brothers", "are", "doctors."], errorIdx: 1, correct: "Both", why: "Do not use 'the' before 'both'. Say 'Both brothers are doctors.'" },
+  { sentence: ["I", "prefer", "tea", "than", "coffee."], errorIdx: 3, correct: "to", why: "The correct preposition after 'prefer' is 'to': 'I prefer tea to coffee.'" },
+  { sentence: ["She", "is", "one", "of", "the", "best", "student."], errorIdx: 6, correct: "students", why: "After 'one of the', always use a plural noun: 'one of the best students'." },
+  { sentence: ["He", "made", "me", "to", "laugh."], errorIdx: 3, correct: "laugh", why: "After 'make', use the bare infinitive (without 'to'): 'He made me laugh.'" },
+  { sentence: ["I", "was", "born", "in", "1990", "year."], errorIdx: 5, correct: "in 1990", why: "Do not add 'year' after the birth year. Say 'I was born in 1990.'" },
+  { sentence: ["She", "doesn't", "know", "to", "swim."], errorIdx: 3, correct: "how to", why: "Say 'She doesn't know how to swim.' The word 'how' is required before 'to' in this pattern." }
+];
