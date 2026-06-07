@@ -30,7 +30,8 @@ const State = {
         totalWords: 0,
         perfectQuizzes: 0,
         completedDays: [],
-        dailyTasks: {}
+        dailyTasks: {},
+        vocabSRS: {}
       }
     };
   },
@@ -38,7 +39,12 @@ const State = {
   load() {
     try {
       const raw = localStorage.getItem(this.KEY);
-      return raw ? Object.assign(this.defaults(), JSON.parse(raw)) : null;
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      const d = this.defaults();
+      const result = Object.assign(d, saved);
+      result.progress = Object.assign(d.progress, saved.progress || {});
+      return result;
     } catch (e) { return null; }
   },
 
@@ -66,6 +72,35 @@ let quizState = { q: 0, score: 0, answered: [], done: false };
 
 // ---- Grammar Ephemeral State ----
 let grammarCatId = 'verbs';
+
+// ---- Daily Task Pool (8 tasks, 5 selected per day) ----
+const TASK_POOL = [
+  { key: 'reading',    icon: '📖', name: 'Reading',        xp: '+10 XP', xpAmt: 10, view: 'lesson' },
+  { key: 'vocabulary', icon: '📝', name: 'Vocabulary',     xp: '+10 XP', xpAmt: 10, view: 'vocabulary' },
+  { key: 'writing',    icon: '✍️',  name: 'Writing',       xp: '+15 XP', xpAmt: 15, view: 'writing' },
+  { key: 'speaking',   icon: '🎤', name: 'Speaking',       xp: '+15 XP', xpAmt: 15, view: 'speaking' },
+  { key: 'quiz',       icon: '🧩', name: 'Quiz',           xp: '+20 XP', xpAmt: 20, view: 'quiz' },
+  { key: 'grammar',    icon: '📚', name: 'Grammar Review', xp: '+10 XP', xpAmt: 10, view: 'grammar', gramCat: 'verbs' },
+  { key: 'errors',     icon: '❌', name: 'Error Hunt',     xp: '+10 XP', xpAmt: 10, view: 'grammar', gramCat: 'errors' },
+  { key: 'idioms',     icon: '💬', name: 'Idiom Practice', xp: '+10 XP', xpAmt: 10, view: 'grammar', gramCat: 'idioms' }
+];
+
+function getDailyTaskSet(dateStr) {
+  const n = dateStr.replace(/-/g, '').split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7);
+  const indices = [0, 1, 2, 3, 4, 5, 6, 7];
+  let seed = Math.abs(n);
+  for (let i = 7; i > 0; i--) {
+    const j = seed % (i + 1);
+    seed = Math.floor(seed / (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return indices.slice(0, 5).map(i => TASK_POOL[i]);
+}
+
+function navigateGrammarTask(catId) {
+  grammarCatId = catId;
+  navigate('grammar');
+}
 
 // ---- Daily News State ----
 let dailyNews = null; // { posts, suggestedTopicIdx, ok, source }
@@ -680,8 +715,9 @@ function renderDashboard(container) {
   const p = appState.progress;
   const tasks = getTasksDone();
   const topic = todayTopic;
-  const completedCount = Object.values(tasks).filter(Boolean).length;
-  const totalTasks = 5;
+  const taskNames = getDailyTaskSet(todayStr);
+  const totalTasks = taskNames.length;
+  const completedCount = taskNames.filter(t => tasks[t.key]).length;
 
   const statsHTML = `
     <div class="dashboard-grid">
@@ -736,7 +772,7 @@ function renderDashboard(container) {
     <div class="card today-card" style="margin-bottom:16px">
       <span class="topic-badge">${topic.category} · ${new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long'})}</span>
       <h3 id="today-topic-title">${topic.icon} ${topic.title}</h3>
-      <p style="margin-bottom:8px">${topic.loading ? 'Loading today\'s content from Wikipedia… ⏳' : 'Today\'s lesson focuses on ' + topic.title + '. Complete all 5 tasks to earn XP!'}</p>
+      <p style="margin-bottom:8px">${topic.loading ? 'Loading today\'s content from Wikipedia… ⏳' : 'Today\'s lesson focuses on ' + topic.title + '. Complete all ' + totalTasks + ' tasks to earn XP!'}</p>
       ${isOverride ? `<div style="font-size:var(--font-size-xs);opacity:0.7;margin-bottom:14px">📌 Custom topic · Auto topic: ${autoTopicTitle}</div>` : ''}
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-white" onclick="navigate('lesson')">Start Lesson →</button>
@@ -762,19 +798,11 @@ function renderDashboard(container) {
       ${isOverride ? `<button style="margin-top:12px;padding:8px 18px;border:2px solid var(--border);border-radius:var(--radius-full);background:transparent;color:var(--text-2);font-size:var(--font-size-sm);font-weight:700;cursor:pointer;font-family:var(--font)" onclick="resetToAutoTopic()">↩ Reset to today's auto topic (${autoTopicTitle})</button>` : ''}
     </div>`;
 
-  const taskNames = [
-    { key: 'reading',   icon: '📖', name: 'Reading',   xp: '+10 XP', view: 'lesson' },
-    { key: 'vocabulary',icon: '📝', name: 'Vocabulary',xp: '+10 XP', view: 'vocabulary' },
-    { key: 'writing',   icon: '✍️',  name: 'Writing',  xp: '+15 XP', view: 'writing' },
-    { key: 'speaking',  icon: '🎤', name: 'Speaking',  xp: '+15 XP', view: 'speaking' },
-    { key: 'quiz',      icon: '🧩', name: 'Quiz',      xp: '+20 XP', view: 'quiz' }
-  ];
-
   const tasksHTML = `
-    <div class="section-header"><h2>Today's Tasks</h2><p>Complete all 5 tasks to earn maximum XP!</p></div>
+    <div class="section-header"><h2>Today's Tasks</h2><p>Complete all ${totalTasks} tasks to earn maximum XP!</p></div>
     <div class="tasks-grid">
       ${taskNames.map(t => `
-        <div class="task-tile ${tasks[t.key] ? 'done' : ''}" onclick="navigate('${t.view}')">
+        <div class="task-tile ${tasks[t.key] ? 'done' : ''}" onclick="${t.gramCat ? `navigateGrammarTask('${t.gramCat}')` : `navigate('${t.view}')`}">
           ${tasks[t.key] ? '<div class="done-check">✓</div>' : ''}
           <span class="task-icon">${t.icon}</span>
           <span class="task-name">${t.name}</span>
@@ -821,15 +849,67 @@ function renderDashboard(container) {
       <div class="news-footer">Practice English by reading and discussing these headlines · <a href="https://www.reddit.com/r/india/hot/" target="_blank" rel="noopener">See all on Reddit ↗</a></div>
     </div>`;
 
+  // Word of the Day (seed-based, no API needed)
+  const wodIdx = (getDayOfYear() - 1) % WORD_OF_DAY_SEEDS.length;
+  const wod = WORD_OF_DAY_SEEDS[wodIdx];
+  const wodHTML = `
+    <div class="wod-banner">
+      <span class="wod-icon">💎</span>
+      <div style="flex:1;min-width:0">
+        <div class="wod-meta">Word of the Day · ${new Date().toLocaleDateString('en-IN', {day:'numeric',month:'short'})}</div>
+        <div class="wod-word">${wod.word} <span style="font-size:var(--font-size-sm);font-weight:400;opacity:0.8">${wod.partOfSpeech}</span></div>
+        <div class="wod-meta" style="margin-top:2px">${wod.pronunciation}</div>
+        <div class="wod-meaning">${wod.meaning}</div>
+      </div>
+      <button class="wod-tts" onclick="TTS.speak('${wod.word.replace(/'/g,"\\'")}. ${wod.meaning.replace(/'/g,"\\'")}. Example: ${wod.example.replace(/'/g,"\\'")}', ()=>{})">🔊</button>
+    </div>`;
+
+  // Daily Sentence Challenge
+  const scIdx = (getDayOfYear() - 1) % SENTENCE_CHALLENGES.length;
+  const sc = SENTENCE_CHALLENGES[scIdx];
+  const scAnsweredKey = 'eoe_sc_' + todayStr;
+  const scAnswered = (() => { try { return JSON.parse(localStorage.getItem(scAnsweredKey)); } catch(e) { return null; } })();
+  const scHTML = `
+    <div class="sentence-challenge-card">
+      <div style="font-size:var(--font-size-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-2);margin-bottom:8px">✏️ Daily Sentence Challenge · +5 XP</div>
+      <div class="sc-sentence">Complete the sentence: <span class="sc-blank">${scAnswered ? sc.blank : '_____'}</span></div>
+      <div style="font-size:var(--font-size-sm);color:var(--text-1);margin-bottom:12px">"${sc.sentence.replace('_____', scAnswered ? `<strong style="color:var(--success)">${sc.blank}</strong>` : '<span class="sc-blank">_____</span>')}"</div>
+      ${scAnswered
+        ? `<div class="tag tag-success" style="padding:8px 16px">✓ Answered today — ${scAnswered.correct ? 'Correct! 🎉' : 'Better luck tomorrow!'}</div>
+           <div class="sc-hint" style="margin-top:8px">💡 ${sc.hint}</div>`
+        : `<div class="sc-options">
+             ${sc.options.map(opt => `<button class="sc-option" onclick="answerSentenceChallenge('${opt.replace(/'/g,"\\'")}','${sc.blank.replace(/'/g,"\\'")}','${scAnsweredKey}')">${opt}</button>`).join('')}
+           </div>
+           <div class="sc-hint">💡 Hint: ${sc.hint}</div>`}
+    </div>`;
+
   container.innerHTML = `
     <div class="section-header">
       <h2>Good ${getGreeting()}, ${appState.profile.name || 'Learner'}! 👋</h2>
       <p>${getDailyMotivation()}</p>
     </div>
-    ${statsHTML}${xpBarHTML}${todayCardHTML}${newsCardHTML}${tasksHTML}${progressHTML}${badgesHTML}`;
+    ${statsHTML}${xpBarHTML}${wodHTML}${todayCardHTML}${scHTML}${tasksHTML}${newsCardHTML}${progressHTML}${badgesHTML}`;
 
   // Kick off fetch if we haven't loaded news yet (or it's from a different session)
   if (!dailyNews) loadDailyNews();
+}
+
+function answerSentenceChallenge(chosen, correct, storageKey) {
+  const isCorrect = chosen === correct;
+  try { localStorage.setItem(storageKey, JSON.stringify({ chosen, correct: isCorrect })); } catch(e) {}
+  document.querySelectorAll('.sc-option').forEach(btn => {
+    if (btn.textContent === chosen) btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    if (!isCorrect && btn.textContent === correct) btn.classList.add('correct');
+    btn.disabled = true;
+  });
+  if (isCorrect) {
+    markTaskDone('sc_challenge', 5, 'Sentence Challenge correct! +5 XP');
+    State.save(appState);
+    Toast.show('Correct! 🎉', '+5 XP earned!', 'success');
+  } else {
+    Toast.show('Not quite!', `The correct answer is "${correct}".`, 'error');
+  }
+  updateTopBar();
 }
 
 function getGreeting() {
@@ -922,6 +1002,7 @@ function renderLesson(container) {
         <div class="vocab-card" id="vcard-${i}" onclick="flipVocabCard(${i})">
           <div class="vocab-card-inner">
             <div class="vocab-front">
+              <button class="word-tts-btn" onclick="event.stopPropagation();TTS.speak('${v.word.replace(/'/g,"\\'")}. ${(v.example||'').replace(/'/g,"\\'")}', ()=>{})">🔊</button>
               <div class="vocab-word">${v.word}</div>
               <div class="vocab-pron">${v.pronunciation}</div>
               <div class="vocab-pos">${v.partOfSpeech}</div>
@@ -936,6 +1017,25 @@ function renderLesson(container) {
           </div>
         </div>`).join('')}
     </div>
+
+    <details class="accordion-card" style="margin-top:28px">
+      <summary class="accordion-summary">👂 Active Listening Tips</summary>
+      <div class="speaking-tips" style="padding-top:16px">
+        ${[
+          ['🔑','Listen for Cue Words','Words like "firstly", "however", and "finally" signal structure. They help you follow the speaker\'s logic.'],
+          ['📝','Note Key Points','Write down main ideas, not every word. Focus on facts, names, and numbers.'],
+          ['❓','Ask Clarifying Questions','If unsure, ask: "Could you explain that again?" or "What do you mean by…?"'],
+          ['⏸️','Suspend Judgement','Wait until the speaker finishes before forming an opinion. Don\'t interrupt.'],
+          ['🔄','Paraphrase Back','Say back what you heard: "So what you\'re saying is…" This confirms understanding.'],
+          ['📵','Reduce Distractions','Put your phone down and face the speaker. Eye contact shows you are listening.']
+        ].map(([icon, title, text]) => `
+          <div class="tip-card">
+            <div class="tip-icon">${icon}</div>
+            <strong>${title}</strong>
+            <p>${text}</p>
+          </div>`).join('')}
+      </div>
+    </details>
 
     <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="navigate('writing')">✍️ Writing Practice →</button>
@@ -1132,7 +1232,54 @@ function renderSpeaking(container) {
           <strong>${title}</strong>
           <p>${text}</p>
         </div>`).join('')}
-    </div>`;
+    </div>
+
+    <div class="section-header" style="margin-top:32px"><h2>🎭 Conversation Scenarios</h2><p>Study real dialogues — tap any card to see the full conversation.</p></div>
+    <div class="scenario-grid">
+      ${CONVERSATION_SCENARIOS.map((s, i) => `
+        <div class="scenario-card" onclick="flipScenario(${i})" id="sc-${i}">
+          <div class="scenario-inner">
+            <div class="scenario-front">
+              <span style="font-size:2rem">${s.icon}</span>
+              <strong>${s.title}</strong>
+              <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;justify-content:center">
+                <span class="tag tag-primary">${s.difficulty}</span>
+                <span class="tag">${s.tag}</span>
+              </div>
+              <p style="font-size:var(--font-size-xs);color:var(--text-3);margin-top:8px">Tap to see dialogue ↗</p>
+            </div>
+            <div class="scenario-back">
+              <div class="scenario-dialogue">
+                ${s.dialogue.map(d => `<div class="dialogue-line"><span class="dialogue-speaker">${d.speaker}:</span> <span>${d.line}</span></div>`).join('')}
+              </div>
+              <button class="tts-btn" style="margin-top:10px" onclick="event.stopPropagation();speakScenario(${i})">🔊 Listen to dialogue</button>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="section-header" style="margin-top:32px"><h2>🎚️ English Registers</h2><p>The same idea said three ways — formal, conversational, and casual.</p></div>
+    <div class="level-selector" id="reg-selector">
+      <button class="level-btn active" id="reg-formal" onclick="switchRegister('formal')">Formal</button>
+      <button class="level-btn" id="reg-conv" onclick="switchRegister('conversational')">Conversational</button>
+      <button class="level-btn" id="reg-casual" onclick="switchRegister('casual')">Casual</button>
+    </div>
+    <div class="card" id="reg-content">${buildRegisterHTML('formal')}</div>
+
+    <details class="accordion-card" style="margin-top:32px">
+      <summary class="accordion-summary">👅 Tongue Twisters <span style="font-size:var(--font-size-xs);color:var(--text-3);font-weight:400">— Train your mouth muscles</span></summary>
+      <div style="padding:16px 0 4px">
+        ${['Easy','Medium','Hard'].map(diff => `
+          <div style="margin-bottom:20px">
+            <div style="font-weight:700;color:var(--text-2);text-transform:uppercase;font-size:var(--font-size-xs);letter-spacing:0.06em;margin-bottom:10px">${diff}</div>
+            ${TONGUE_TWISTERS.filter(t => t.difficulty === diff).map((t, ti) => `
+              <div class="twister-row">
+                <span class="twister-text">"${t.text}"</span>
+                <button class="tts-btn" onclick="TTS.speak('${t.text.replace(/'/g,"\\'")}', ()=>{})">🔊</button>
+              </div>`).join('')}
+          </div>`).join('')}
+      </div>
+    </details>`;
 }
 
 function listenPrompt() {
@@ -1188,17 +1335,82 @@ function completeSpeaking() {
   }
 }
 
+function flipScenario(idx) {
+  const card = el('sc-' + idx);
+  if (card) card.classList.toggle('flipped');
+}
+
+function speakScenario(idx) {
+  const s = CONVERSATION_SCENARIOS[idx];
+  const text = s.dialogue.map(d => d.speaker + '. ' + d.line).join('  ');
+  TTS.speak(text, () => {});
+}
+
+let activeRegister = 'formal';
+function switchRegister(reg) {
+  activeRegister = reg;
+  ['formal','conv','casual'].forEach(r => {
+    const btn = el('reg-' + r);
+    if (btn) btn.classList.remove('active');
+  });
+  const activeId = reg === 'formal' ? 'reg-formal' : reg === 'conversational' ? 'reg-conv' : 'reg-casual';
+  const activeBtn = el(activeId);
+  if (activeBtn) activeBtn.classList.add('active');
+  const content = el('reg-content');
+  if (content) content.innerHTML = buildRegisterHTML(reg);
+}
+
+function buildRegisterHTML(reg) {
+  return REGISTER_DATA.map(r => `
+    <div class="register-row">
+      <span class="register-icon">${r.icon}</span>
+      <div>
+        <div class="register-situation">${r.situation}</div>
+        <div class="register-phrase">"${r[reg]}"</div>
+      </div>
+      <button class="tts-btn" style="flex-shrink:0" onclick="TTS.speak('${r[reg].replace(/'/g,"\\'")}', ()=>{})">🔊</button>
+    </div>`).join('');
+}
+
 // ---- View: Quiz ----
+let quizTab = 'daily'; // 'daily' | 'errors'
+
 function renderQuiz(container) {
   const topic = todayTopic;
   const tasks = getTasksDone();
 
+  container.innerHTML = `
+    <div class="section-header">
+      <h2>🧩 Quiz</h2>
+      <p>Topic: <strong>${topic.icon} ${topic.title}</strong></p>
+    </div>
+    <div class="level-selector" style="margin-bottom:20px">
+      <button class="level-btn ${quizTab === 'daily' ? 'active' : ''}" onclick="switchQuizTab('daily')">🧩 Daily Quiz</button>
+      <button class="level-btn ${quizTab === 'errors' ? 'active' : ''}" onclick="switchQuizTab('errors')">🔍 Error Hunt</button>
+    </div>
+    <div id="quiz-body"></div>`;
+
+  renderQuizTabContent();
+}
+
+function switchQuizTab(tab) {
+  quizTab = tab;
+  document.querySelectorAll('.level-selector .level-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && tab === 'daily') || (i === 1 && tab === 'errors'));
+  });
+  renderQuizTabContent();
+}
+
+function renderQuizTabContent() {
+  const body = el('quiz-body');
+  if (!body) return;
+  if (quizTab === 'errors') { renderErrorHunt(body); return; }
+
+  const topic = todayTopic;
+  const tasks = getTasksDone();
+
   if (topic.dynamic && (topic.loading || topic.quiz.length === 0)) {
-    container.innerHTML = `
-      <div class="section-header">
-        <h2>🧩 Daily Quiz</h2>
-        <p>Topic: <strong>${topic.icon} ${topic.title}</strong></p>
-      </div>
+    body.innerHTML = `
       <div class="card" style="text-align:center;padding:48px 24px">
         <div style="font-size:40px;margin-bottom:16px">${topic.loading ? '⏳' : '⚠️'}</div>
         <div style="font-size:var(--font-size-lg);font-weight:700;margin-bottom:8px">${topic.loading ? 'Preparing quiz questions…' : 'Quiz unavailable offline'}</div>
@@ -1210,15 +1422,8 @@ function renderQuiz(container) {
 
   quizState = { q: 0, score: 0, answered: new Array(topic.quiz.length).fill(null), done: false };
 
-  container.innerHTML = `
-    <div class="section-header">
-      <h2>🧩 Daily Quiz</h2>
-      <p>Topic: <strong>${topic.icon} ${topic.title}</strong> · ${topic.quiz.length} Questions</p>
-    </div>
-    <div id="quiz-body"></div>`;
-
   if (tasks.quiz) {
-    document.getElementById('quiz-body').innerHTML = `
+    body.innerHTML = `
       <div class="card text-center" style="padding:40px">
         <div style="font-size:48px;margin-bottom:12px">✅</div>
         <h3 style="font-size:var(--font-size-xl);font-weight:800">Quiz Already Done Today!</h3>
@@ -1328,6 +1533,75 @@ function finishQuiz() {
   }
 }
 
+// ---- Error Hunt Game ----
+let errorHuntState = null; // { questions, idx, score, selected }
+
+function renderErrorHunt(body) {
+  if (!errorHuntState) {
+    const shuffled = ERROR_GAME_DATA.slice().sort(() => Math.random() - 0.5).slice(0, 8);
+    errorHuntState = { questions: shuffled, idx: 0, score: 0, selected: null };
+  }
+  const { questions, idx, score, selected } = errorHuntState;
+
+  if (idx >= questions.length) {
+    const pct = Math.round(score / questions.length * 100);
+    body.innerHTML = `
+      <div class="quiz-result show">
+        <div style="font-size:64px;margin-bottom:12px">${pct === 100 ? '🏆' : pct >= 70 ? '🎉' : '💪'}</div>
+        <div class="result-score ${pct === 100 ? 'perfect' : pct >= 70 ? 'good' : 'ok'}">${score}/${questions.length}</div>
+        <div class="result-msg">${pct === 100 ? 'Perfect! You spotted every error!' : pct >= 70 ? 'Great error-hunting skills!' : 'Keep practising — errors get easier to spot!'}</div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="errorHuntState=null;renderErrorHunt(el('quiz-body'))">🔁 Play Again</button>
+          <button class="btn btn-secondary" onclick="navigate('grammar')">📝 Study Common Errors</button>
+        </div>
+      </div>`;
+    if (markTaskDone('error_hunt', 10, 'Error Hunt completed!')) { State.save(appState); checkBadges(); }
+    return;
+  }
+
+  const item = questions[idx];
+  body.innerHTML = `
+    <div class="card" style="margin-bottom:20px">
+      <div style="font-size:var(--font-size-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-2);margin-bottom:12px">🔍 Question ${idx + 1} of ${questions.length} · Score: ${score}</div>
+      <p style="margin-bottom:16px;font-weight:600">Tap the <strong style="color:var(--danger)">incorrect word</strong> in this sentence:</p>
+      <div class="error-sentence" id="eh-sentence">
+        ${item.sentence.map((word, wi) => {
+          let cls = 'word-token';
+          if (selected !== null) {
+            if (wi === item.errorIdx) cls += ' correct-target';
+            else if (wi === selected && selected !== item.errorIdx) cls += ' selected';
+          }
+          return `<span class="${cls}" ${selected === null ? `onclick="selectErrorWord(${wi})"` : ''}>${word}</span>`;
+        }).join(' ')}
+      </div>
+      ${selected !== null ? `
+        <div id="eh-feedback" style="margin-top:16px;padding:14px 16px;background:var(--surface-2);border-radius:var(--radius);border:1px solid var(--border)">
+          ${selected === item.errorIdx
+            ? `<div style="color:var(--success);font-weight:700;margin-bottom:6px">✓ Correct! That's the error.</div>`
+            : `<div style="color:var(--danger);font-weight:700;margin-bottom:6px">✗ Not quite. The error is "${item.sentence[item.errorIdx]}".</div>`}
+          <p style="font-size:var(--font-size-sm);margin:0"><strong>Correction:</strong> Replace <em>${item.sentence[item.errorIdx]}</em> with <strong style="color:var(--success)">${item.correct}</strong></p>
+          <p style="font-size:var(--font-size-sm);color:var(--text-2);margin-top:6px">💡 ${item.why}</p>
+          <button class="btn btn-primary" style="margin-top:14px" onclick="errorHuntNext()">Next →</button>
+        </div>` : ''}
+    </div>`;
+}
+
+function selectErrorWord(wordIdx) {
+  if (!errorHuntState || errorHuntState.selected !== null) return;
+  errorHuntState.selected = wordIdx;
+  if (wordIdx === errorHuntState.questions[errorHuntState.idx].errorIdx) {
+    errorHuntState.score++;
+  }
+  renderErrorHunt(el('quiz-body'));
+}
+
+function errorHuntNext() {
+  if (!errorHuntState) return;
+  errorHuntState.idx++;
+  errorHuntState.selected = null;
+  renderErrorHunt(el('quiz-body'));
+}
+
 // ---- View: Vocabulary ----
 function renderVocabulary(container) {
   const topic = todayTopic;
@@ -1354,6 +1628,7 @@ function renderVocabulary(container) {
           <div class="vocab-card" id="vcpage-${i}" onclick="this.classList.toggle('flipped')">
             <div class="vocab-card-inner">
               <div class="vocab-front">
+                <button class="word-tts-btn" onclick="event.stopPropagation();TTS.speak('${v.word.replace(/'/g,"\\'")}. ${(v.example||'').replace(/'/g,"\\'")}', ()=>{})">🔊</button>
                 <div class="vocab-word">${v.word}</div>
                 <div class="vocab-pron">${v.pronunciation}</div>
                 <div class="vocab-pos">${v.partOfSpeech}</div>
@@ -1369,10 +1644,17 @@ function renderVocabulary(container) {
           </div>`).join('')}
        </div>`;
 
+  const dueCount = getSRSDueWords().length;
+
   container.innerHTML = `
-    <div class="section-header">
-      <h2>📚 Vocabulary Builder</h2>
-      <p>Today's words from <strong>${topic.icon} ${topic.title}</strong></p>
+    <div class="section-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <h2>📚 Vocabulary Builder</h2>
+        <p>Today's words from <strong>${topic.icon} ${topic.title}</strong></p>
+      </div>
+      <button class="btn btn-secondary" style="flex-shrink:0" onclick="startVocabReview()">
+        🔁 Review Words${dueCount > 0 ? ` <span style="background:var(--danger);color:#fff;border-radius:var(--radius-full);padding:1px 8px;font-size:var(--font-size-xs)">${dueCount}</span>` : ''}
+      </button>
     </div>
 
     <div class="section-header"><h2 style="font-size:1.2em">Today's 2 Words</h2></div>
@@ -1407,23 +1689,112 @@ function renderVocabulary(container) {
     </div>`;
 }
 
+function toggleWordDetail(i) {
+  const d = document.getElementById('wdetail-' + i);
+  const c = document.getElementById('wchev-' + i);
+  if (d) { const show = d.style.display === 'none'; d.style.display = show ? 'block' : 'none'; }
+  if (c) c.textContent = c.textContent === '›' ? '⌄' : '›';
+}
+
+// ---- 2.4 Spaced Repetition ----
+let srsSession = null; // { words, idx, showMeaning }
+
+function getSRSDueWords() {
+  const srs = appState.progress.vocabSRS || {};
+  const allWords = CONTENT_DATA.topics.flatMap(t =>
+    t.vocabulary.map(v => ({ ...v, topicTitle: t.title }))
+  );
+  const topic = todayTopic;
+  if (topic.dynamic && !topic.loading && topic.vocabulary.length > 0) {
+    topic.vocabulary.forEach(v => allWords.unshift({ ...v, topicTitle: topic.title }));
+  }
+  return allWords.filter(v => {
+    const entry = srs[v.word];
+    if (!entry) return true; // New word — always due
+    if (entry.stage === 'mastered') return false;
+    return entry.nextReview <= todayStr;
+  });
+}
+
+function startVocabReview() {
+  const due = getSRSDueWords();
+  if (due.length === 0) {
+    Toast.show('All caught up!', 'No words due for review today. Come back tomorrow!', 'success');
+    return;
+  }
+  srsSession = { words: due.slice(0, 10), idx: 0, showMeaning: false };
+  renderSRSCard();
+}
+
+function renderSRSCard() {
+  const container = el('view-container');
+  if (!container || !srsSession) return;
+  const { words, idx } = srsSession;
+  if (idx >= words.length) { srsSession = null; navigate('vocabulary'); Toast.show('Review done!', 'Great work reviewing your vocabulary! +5 XP', 'success'); markTaskDone('srs_review', 5, 'Vocab review done!'); State.save(appState); return; }
+  const v = words[idx];
+  const srs = appState.progress.vocabSRS[v.word];
+  const stage = srs ? srs.stage : 'new';
+  container.innerHTML = `
+    <div class="section-header">
+      <h2>🔁 Vocabulary Review</h2>
+      <p>Word ${idx + 1} of ${words.length} · <span style="color:var(--primary);font-weight:700">${stage === 'new' ? 'New' : stage === 'learning' ? 'Learning' : 'Review'}</span></p>
+    </div>
+    <div class="srs-session-card" id="srs-card">
+      <div class="srs-word">${v.word}</div>
+      <div class="srs-pron">${v.pronunciation} · ${v.partOfSpeech}</div>
+      <button class="tts-btn" style="margin-bottom:16px" onclick="TTS.speak('${v.word.replace(/'/g,"\\'")}', ()=>{})">🔊 Hear it</button>
+      <div id="srs-meaning-area">
+        <button class="btn btn-secondary" onclick="showSRSMeaning()">👁 Show Meaning</button>
+      </div>
+    </div>
+    <button class="btn btn-secondary" onclick="srsSession=null;navigate('vocabulary')">← Back to Vocabulary</button>`;
+}
+
+function showSRSMeaning() {
+  if (!srsSession) return;
+  const v = srsSession.words[srsSession.idx];
+  const area = el('srs-meaning-area');
+  if (!area) return;
+  area.innerHTML = `
+    <div class="srs-meaning-reveal">
+      <strong>Meaning:</strong> ${v.meaning}<br>
+      <em style="margin-top:6px;display:block">"${v.example}"</em>
+      <div class="vocab-tip" style="margin-top:8px"><strong>💡</strong> ${v.tip}</div>
+    </div>
+    <div class="srs-btn-row" style="margin-top:20px">
+      <button class="srs-again-btn" onclick="srsAgain()">✗ Still Learning</button>
+      <button class="srs-knew-btn" onclick="srsKnew()">✓ Got It!</button>
+    </div>`;
+}
+
+function srsKnew() {
+  if (!srsSession) return;
+  const v = srsSession.words[srsSession.idx];
+  if (!appState.progress.vocabSRS) appState.progress.vocabSRS = {};
+  const cur = appState.progress.vocabSRS[v.word] || { stage: 'new' };
+  const next = cur.stage === 'new' ? 'learning' : cur.stage === 'learning' ? 'mastered' : 'mastered';
+  const days = next === 'learning' ? 3 : 7;
+  const d = new Date(); d.setDate(d.getDate() + days);
+  appState.progress.vocabSRS[v.word] = { stage: next, nextReview: d.toISOString().split('T')[0] };
+  State.save(appState);
+  srsSession.idx++;
+  renderSRSCard();
+}
+
+function srsAgain() {
+  if (!srsSession) return;
+  const v = srsSession.words[srsSession.idx];
+  if (!appState.progress.vocabSRS) appState.progress.vocabSRS = {};
+  appState.progress.vocabSRS[v.word] = { stage: 'new', nextReview: todayStr };
+  State.save(appState);
+  srsSession.idx++;
+  renderSRSCard();
+}
+
 function reloadDynamicTopic() {
   dynamicTopicLoading = false;
   loadDynamicTopicContent();
   navigate(currentView);
-}
-
-function toggleWordDetail(i) {
-  const det = el('wdetail-' + i);
-  const chev = el('wchev-' + i);
-  if (!det) return;
-  if (det.style.display === 'none') {
-    det.style.display = 'block';
-    if (chev) chev.textContent = '∨';
-  } else {
-    det.style.display = 'none';
-    if (chev) chev.textContent = '›';
-  }
 }
 
 function completeVocabulary() {
@@ -1446,13 +1817,29 @@ function renderGrammar(container) {
       ${c.icon} ${c.title}
     </button>`).join('');
 
+  const todayGramTask = getDailyTaskSet(todayStr).find(t => t.view === 'grammar' && t.gramCat === grammarCatId);
+  const tasksDone = getTasksDone();
+  const gramTaskBtnHTML = todayGramTask && !tasksDone[todayGramTask.key]
+    ? `<button class="btn btn-primary" style="margin-top:20px" onclick="completeGrammarTask('${todayGramTask.key}','${todayGramTask.name}')">✓ Mark "${todayGramTask.name}" Complete · ${todayGramTask.xp}</button>`
+    : (todayGramTask && tasksDone[todayGramTask.key] ? `<div style="margin-top:20px;color:var(--success);font-weight:700">✓ ${todayGramTask.name} completed today!</div>` : '');
+
   container.innerHTML = `
     <div class="section-header">
       <h2>📝 Grammar Guide</h2>
       <p>Master English grammar — verbs, tenses, sentence structure, articles, and more.</p>
     </div>
     <div class="gram-cats-wrap">${catsHTML}</div>
-    <div id="gram-content">${buildGrammarCatHTML(cat)}</div>`;
+    <div id="gram-content">${buildGrammarCatHTML(cat)}</div>
+    ${gramTaskBtnHTML}`;
+}
+
+function completeGrammarTask(key, name) {
+  if (markTaskDone(key, 10, name + ' completed!')) {
+    State.save(appState);
+    checkBadges();
+    Toast.show('Great work!', name + ' marked complete. +10 XP!', 'success');
+    navigate('grammar');
+  }
 }
 
 function selectGrammarCat(id) {
@@ -1475,6 +1862,23 @@ function selectGrammarCat(id) {
   }
   const content = document.getElementById('gram-content');
   if (content) { content.style.animation = 'none'; content.offsetHeight; content.style.animation = ''; content.innerHTML = buildGrammarCatHTML(cat); }
+
+  const todayGramTask = getDailyTaskSet(todayStr).find(t => t.view === 'grammar' && t.gramCat === id);
+  const tasksDone = getTasksDone();
+  let taskBtn = document.getElementById('gram-task-btn');
+  if (!taskBtn) {
+    taskBtn = document.createElement('div');
+    taskBtn.id = 'gram-task-btn';
+    const vc = document.getElementById('view-container');
+    if (vc) vc.appendChild(taskBtn);
+  }
+  if (todayGramTask && !tasksDone[todayGramTask.key]) {
+    taskBtn.innerHTML = `<button class="btn btn-primary" style="margin-top:20px" onclick="completeGrammarTask('${todayGramTask.key}','${todayGramTask.name}')">✓ Mark "${todayGramTask.name}" Complete · ${todayGramTask.xp}</button>`;
+  } else if (todayGramTask && tasksDone[todayGramTask.key]) {
+    taskBtn.innerHTML = `<div style="margin-top:20px;color:var(--success);font-weight:700">✓ ${todayGramTask.name} completed today!</div>`;
+  } else {
+    taskBtn.innerHTML = '';
+  }
 }
 
 function buildGrammarCatHTML(cat) {
